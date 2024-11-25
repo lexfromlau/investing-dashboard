@@ -1,37 +1,42 @@
 import * as Styled from "./App.style";
-import AdvancedChart from "./components/widgets/AdvancedChart/AdvancedChart";
-import TickerTape from "./components/widgets/TickerTape/TickerTape";
+import {
+  advancedChartEndpoint,
+  setChartDataByInterval,
+  tickerTapeData,
+  tickerTapeEndpoint,
+} from "./components/widgets/Widget/data/widgetData";
+import Widget from "./components/widgets/Widget/Widget";
 
 function App() {
-  const setChartInterval = (interval: string) => `
-  {
-    "autosize": true,
-    "symbol": "NASDAQ:MSFT",
-    "interval": "${interval}",
-    "timezone": "Etc/UTC",
-    "theme": "light",
-    "style": "1",
-    "locale": "en",
-    "allow_symbol_change": true,
-    "calendar": false,
-    "hide_side_toolbar": false,
-    "studies": [
-      "STD;Average_True_Range",
-      "STD;Bollinger_Bands"
-    ],
-    "support_host": "https://www.tradingview.com"
-  }`;
-
   return (
     <>
-      <TickerTape />
-      <AdvancedChart data={setChartInterval("D")} />
+      <Widget
+        id="ticker-tape"
+        data={tickerTapeData}
+        endpoint={tickerTapeEndpoint}
+      />
+      <Styled.DailyChart>
+        <Widget
+          id="advanced-chart-daily"
+          data={setChartDataByInterval("D")}
+          endpoint={advancedChartEndpoint}
+        />
+      </Styled.DailyChart>
+
       <Styled.FlexWrap>
         <div style={{ height: "300px", width: "50%" }}>
-          <AdvancedChart data={setChartInterval("W")} />
+          <Widget
+            id="advanced-chart-weekly"
+            data={setChartDataByInterval("W")}
+            endpoint={advancedChartEndpoint}
+          />
         </div>
         <div style={{ height: "300px", width: "50%" }}>
-          <AdvancedChart data={setChartInterval("M")} />
+          <Widget
+            id="advanced-chart-monthly"
+            data={setChartDataByInterval("M")}
+            endpoint={advancedChartEndpoint}
+          />
         </div>
       </Styled.FlexWrap>
     </>

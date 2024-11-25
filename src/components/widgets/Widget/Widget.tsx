@@ -1,11 +1,13 @@
 import React from "react";
-import * as Styled from "./AdvancedChart.style";
 
-interface AdvancedChartProps {
+interface WidgetProps {
+  id: string;
+  endpoint: string;
   data: string;
+  className?: string;
 }
 
-const AdvancedChart: React.FC<AdvancedChartProps> = ({ data }) => {
+const Widget: React.FC<WidgetProps> = ({ id, endpoint, data, className }) => {
   const container = React.useRef<HTMLDivElement>(null);
   const isInitialized = React.useRef(false);
 
@@ -15,17 +17,15 @@ const AdvancedChart: React.FC<AdvancedChartProps> = ({ data }) => {
 
     if (container.current) {
       const script = document.createElement("script");
-      script.src =
-        "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
+      script.src = `https://s3.tradingview.com/external-embedding/${endpoint}`;
       script.type = "text/javascript";
       script.async = true;
       script.innerHTML = data;
-
       container.current.appendChild(script);
     }
-  }, [data]);
+  }, [data, endpoint]);
 
-  return <Styled.Container ref={container} />;
+  return <div ref={container} id={id} className={className} />;
 };
 
-export default React.memo(AdvancedChart);
+export default React.memo(Widget);
